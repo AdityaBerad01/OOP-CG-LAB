@@ -1,73 +1,85 @@
-import java.util.*;
-
-public class Calculator {
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int choice;
-        double num1, num2, result;
-
-        do {
-            System.out.println("Calculator Menu");
-            System.out.println("1. Addition");
-            System.out.println("2. Subtraction");
-            System.out.println("3. Multiplication");
-            System.out.println("4. Division");
-            System.out.println("5. Exit");
-            System.out.print("Enter your choice (1-5): ");
-            choice = sc.nextInt();
-
-            switch (choice) {
-                case 1:
-                    System.out.print("Enter first number: ");
-                    num1 = sc.nextDouble();
-                    System.out.print("Enter second number: ");
-                    num2 = sc.nextDouble();
-                    result = num1 + num2;
-                    System.out.println("Result: " + result);
-                    break;
-
-                case 2:
-                    System.out.print("Enter first number: ");
-                    num1 = sc.nextDouble();
-                    System.out.print("Enter second number: ");
-                    num2 = sc.nextDouble();
-                    result = num1 - num2;
-                    System.out.println("Result: " + result);
-                    break;
-
-                case 3:
-                    System.out.print("Enter first number: ");
-                    num1 = sc.nextDouble();
-                    System.out.print("Enter second number: ");
-                    num2 = sc.nextDouble();
-                    result = num1 * num2;
-                    System.out.println("Result: " + result);
-                    break;
-
-                case 4:
-                    System.out.print("Enter first number: ");
-                    num1 = sc.nextDouble();
-                    System.out.print("Enter second number: ");
-                    num2 = sc.nextDouble();
-                    if (num2 != 0) {
-                        result = num1 / num2;
-                        System.out.println("Result: " + result);
-                    } else {
-                        System.out.println("Error: Division by zero is not allowed.");
-                    }
-                    break;
-
-                case 5:
-                    System.out.println("Exiting calculator. Goodbye!");
-                    break;
-
-                default:
-                    System.out.println("Invalid choice! Please enter a number between 1 and 5.");
+import java.util.Scanner; 
+ 
+class ATM { 
+    private double balance; 
+ 
+    public ATM(double initialBalance) {         
+        this.balance = initialBalance; 
+    } 
+ 
+    public void checkBalance() { 
+        System.out.println("Current Balance: ₹" + balance); 
+    } 
+ 
+    public void deposit(double amount) {         
+        if (amount <= 0) {             
+            throw new IllegalArgumentException("Deposit amount must be positive."); 
+        } 
+        balance += amount; 
+        System.out.println("Deposited: ₹" + amount); 
+    } 
+ 
+    public void withdraw(double amount) {         
+        if (amount <= 0) {
+                 throw new IllegalArgumentException("Withdrawal amount must be positive."); 
+        } 
+        if (amount > balance) {    
+                 throw new IllegalArgumentException("Insufficient Balance!"); 
+        } 
+        balance -= amount; 
+        System.out.println("Withdrawn: ₹" + amount); 
+    } 
+} 
+ 
+public class ATM_simulation { 
+    public static void main(String[] args) { 
+        Scanner sc = new Scanner(System.in);         
+        ATM atm = new ATM(1000); // initial balance         i
+        int choice = 0; 
+         while (true) {             try { 
+                System.out.println("\n--- ATM MENU ---"); 
+                System.out.println("1. Check Balance"); 
+                System.out.println("2. Deposit"); 
+                System.out.println("3. Withdraw"); 
+                System.out.println("4. Exit");                
+                System.out.print("Enter your choice: ");                 
+                choice = sc.nextInt(); 
+ 
+                switch (choice) {                     
+                    case 1:                         
+                        atm.checkBalance();                         
+                    break;                     
+                    case 2: 
+                        System.out.print("Enter amount to deposit: ");                         
+                        double dep = sc.nextDouble();                         
+                        atm.deposit(dep);                         
+                        break;                     
+                    case 3: 
+                        System.out.print("Enter amount to withdraw: ");                         
+                        double wd = sc.nextDouble();                         
+                        atm.withdraw(wd);                         
+                        break;                     
+                    case 4: 
+                        System.out.println("Thank you for using ATM. Goodbye!");                         
+                        sc.close();                         
+                        System.exit(0);                     
+                    default: 
+                        System.out.println("Invalid choice! Please try again."); 
+                } 
+            } 
+            catch (IllegalArgumentException e) { 
+                System.out.println("Error: " + e.getMessage()); 
             }
-
-        } while (choice != 5);
-
-        
-    }
-}
+            catch (ArithmeticException e) { 
+                System.out.println("Math Error: " + e.getMessage()); 
+            } 
+            catch (Exception e) { 
+                System.out.println("Invalid input! Please enter valid numbers.");                 
+                sc.nextLine(); // clear invalid input 
+            } 
+            finally { 
+                System.out.println("Transaction finished.\n"); 
+            } 
+        } 
+    } 
+} 
